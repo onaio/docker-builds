@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "SECRET_KEY = '$(date +%s | sha256sum | base64 | head -c 64)'" >> /opt/graphite/webapp/graphite/local_settings.py
+
+export GRAPHITE_DB_NAME=graphite
+export GRAPHITE_DB_USER=graphite
+export GRAPHITE_DB_PASSWORD=graphite
+export GRAPHITE_DB_HOST=$DB_PORT_5432_TCP_ADDR
+export GRAPHITE_DB_PORT=$DB_PORT_5432_TCP_PORT
+
+cd /opt/graphite/webapp && \
+    PYTHONPATH=/opt/graphite/webapp django-admin.py syncdb \
+    --noinput --settings=graphite.settings
+PYTHONPATH=/opt/graphite/webapp python /opt/graphite/webapp/admin_user.py
+mkdir -p /opt/graphite/storage/log/webapp
+mkdir -p /opt/graphite/storage/whisper
+mkdir -p /opt/graphite/storage/rrd
+mkdir -p /opt/graphite/storage/ceres
+mkdir -p /opt/graphite/storage/lists
+
+exec supervisord -c /etc/supervisor/supervisord.conf -n
