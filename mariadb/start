@@ -1,0 +1,25 @@
+#!/bin/bash
+
+USER=admin
+
+if [[ ! "$(ls -A $DATA_DIR)" ]]; then
+    mysql_install_db
+    mysqld_safe &
+    sleep 10s
+
+    cp -R /var/lib/mysql/* $DATA_DIR
+    chown -R mysql:mysql $DATA_DIR
+    chown root:root $DATA_DIR/debian*.flag
+
+    PASS=$(pwgen -s 12 1)
+
+    echo "Creating user $USER with password '$PASS'."
+
+    mysql -u root -e "CREATE USER '$USER'@'%' IDENTIFIED BY '$PASS';"
+    mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '$USER'@'%' WITH GRANT OPTION;"
+
+    mysqladmin -u root shutdown
+    sleep 10s
+fi
+
+mysqld_safe
