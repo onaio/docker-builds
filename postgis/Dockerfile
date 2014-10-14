@@ -13,12 +13,18 @@ RUN apt-key --keyring $KEYRING add /apt.postgresql.org.gpg
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-script postgis
 
-ADD pg_hba.conf /etc/postgresql/9.3/main/pg_hba.conf 
+ADD pg_hba.conf /etc/postgresql/9.3/main/pg_hba.conf
 ADD postgresql.conf /etc/postgresql/9.3/main/postgresql.conf
 
 
 # Cleanup
 RUN apt-get clean
+
+ENV LANGUAGE en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+RUN locale-gen en_US.UTF-8
+RUN dpkg-reconfigure locales
 
 EXPOSE 5432
 
