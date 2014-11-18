@@ -11,6 +11,6 @@ RUN wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 RUN mv lein /usr/bin
 RUN chmod 755 /usr/bin/lein
 RUN lein version
-RUN apt clean
+RUN apt-get clean
 
 CMD ["lein"]
