@@ -10,7 +10,7 @@ RUN apt-get install -yqq socat
 # we need postgres client
 RUN apt-get install -yqq  postgresql-client-9.3
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq python python-dev python-setuptools python-pip git-core libpq-dev libproj-dev gdal-bin
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq python python-dev python-setuptools python-pip git-core libpq-dev libproj-dev gdal-bin wget python-software-properties software-properties-common
 
 RUN apt-get clean
 
@@ -19,6 +19,7 @@ ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 RUN locale-gen en_US.UTF-8
 RUN dpkg-reconfigure locales
+RUN easy_install pip
 
 CMD ["python2"]
 
