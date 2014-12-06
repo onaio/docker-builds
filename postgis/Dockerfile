@@ -1,6 +1,6 @@
 FROM ubuntu
 
-MAINTAINER Ukang'a Dickson
+MAINTAINER Ukang'a Dickson <ukanga@gmail.com>
 
 
 ENV CODENAME trusty
@@ -15,6 +15,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql-9.3-postgis-2.1
 
 ADD pg_hba.conf /etc/postgresql/9.3/main/pg_hba.conf
 ADD postgresql.conf /etc/postgresql/9.3/main/postgresql.conf
+ADD start /start
+RUN chmod +x /start
 
 
 # Cleanup
@@ -28,6 +30,4 @@ RUN dpkg-reconfigure locales
 
 EXPOSE 5432
 
-USER postgres
-
-CMD ["/usr/lib/postgresql/9.3/bin/postgres", "-D", "/var/lib/postgresql/9.3/main", "-c", "config_file=/etc/postgresql/9.3/main/postgresql.conf", "-c", "listen_addresses=*"]
+CMD ["/start"]
