@@ -11,6 +11,7 @@ RUN apt-get install -yqq socat
 RUN apt-get install -yqq  postgresql-client-9.3
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq python python-dev python-setuptools python-pip git-core libpq-dev libproj-dev gdal-bin wget python-software-properties software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq  libx11-dev libsqlite3-dev
 
 RUN apt-get clean
 
