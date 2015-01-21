@@ -17,7 +17,7 @@ RUN npm install phantomjs
 
 RUN apt-get clean
 
-RUN useradd -m zedonk
-USER zedonk
+RUN useradd -m ubuntu
+USER ubuntu
 
 CMD ["lein"]
