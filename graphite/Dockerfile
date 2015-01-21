@@ -4,7 +4,7 @@ MAINTAINER Ukang'a Dickson <ukanga@gmail.com>
 
 RUN apt-get update -qq \
     && apt-get -yqq install python python-dev python-setuptools python-pip python-distribute \
-    git libcairo2 libcairo2-dev memcached nginx supervisor
+    git libcairo2 libcairo2-dev memcached nginx supervisor libffi-dev
 RUN cd /usr/local/src && git clone https://github.com/graphite-project/graphite-web.git
 RUN cd /usr/local/src/graphite-web && pip install -r requirements.txt && pip install uwsgi && python setup.py install \
     && apt-get install -yqq libffi-dev && pip install cairocffi
