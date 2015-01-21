@@ -1,5 +1,5 @@
 FROM bradrydzewski/base
-RUN sudo apt-get remove -y default-jre default-jdk openjdk-6-jdk && \
+RUN sudo apt-get remove openjdk-6-jdk openjdk-6-jre openjdk-6-jre-headless openjdk-6-jre-lib && \
     sudo apt-get update && sudo apt-get install openjdk-7-jdk openjdk-7-jre
 
 WORKDIR /home/ubuntu
