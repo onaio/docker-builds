@@ -11,8 +11,8 @@ if [ -d "$cleanedpath" ]; then
 	printf 'Generating the report .... \n'
 	( cd "$cleanedpath" && /usr/lib/tsung/bin/tsung_stats.pl )
 
-	export AWS_ACCESS_KEY_ID="AKIAIE2IR7632AYAFBTA"
-	export AWS_SECRET_ACCESS_KEY="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"
+	export AWS_ACCESS_KEY_ID="KEY"
+	export AWS_SECRET_ACCESS_KEY="Access"
 	export S3_BUCKET="whodcptest"
 	export FOLDER="tsung-reports"
 	export REGION="us-west-1"
