@@ -1,0 +1,19 @@
+{
+    "id": "tutorial",
+    "submission": {
+        "tutorial": {
+            "name": "Fennod",
+            "age": "44",
+            "gender": "female",
+            "date": "2015-02-01",
+            "pizza_fan": "no",
+            "start_time": "2015-02-06T10:10:19.998+03",
+            "end_time": "2015-02-06T10:10:43.768+03",
+            "today": "2015-02-06",
+            "imei": "359297054780555",
+            "meta": {
+                "instanceID": "uuid:%%_uuid%%"
+            }
+        }
+    }
+}
