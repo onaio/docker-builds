@@ -1,6 +1,11 @@
 import os
+import sys
+
+from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "graphite.settings")
+application = get_wsgi_application()
+
 from django.contrib.auth.models import User
 
 username = 'admin'
