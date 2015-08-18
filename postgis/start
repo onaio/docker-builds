@@ -1,5 +1,5 @@
 #!/bin/bash
-DATADIR=/var/lib/postgresql/9.3/main
+DATADIR=/var/lib/postgresql/9.4/main
 
 # test if DATADIR is existent
 if [ ! -d $DATADIR ]; then
@@ -11,7 +11,7 @@ fi
 if [ ! "$(ls -A $DATADIR)" ]; then
     echo "Initializing Postgres Database at $DATADIR"
     chown -R postgres $DATADIR
-    su postgres sh -c "/usr/lib/postgresql/9.3/bin/initdb --locale en_US.UTF-8 -E UTF8 -D $DATADIR"
+    su postgres sh -c "/usr/lib/postgresql/9.4/bin/initdb --locale en_US.UTF-8 -E UTF8 -D $DATADIR"
 fi
 
-su postgres -c "/usr/lib/postgresql/9.3/bin/postgres -D $DATADIR -c config_file=/etc/postgresql/9.3/main/postgresql.conf -c listen_addresses=*"
+su postgres -c "/usr/lib/postgresql/9.4/bin/postgres -D $DATADIR -c config_file=/etc/postgresql/9.4/main/postgresql.conf -c listen_addresses=*"
