@@ -12,6 +12,4 @@ RUN apt-get -y update && apt-get install -y curl xz-utils git-core build-essenti
     groupadd -r ubuntu && useradd -r -g ubuntu ubuntu && \
     apt-get clean
 
-USER ubuntu
-
 CMD ["iojs"]
