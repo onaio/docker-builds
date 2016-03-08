@@ -1,19 +1,13 @@
-FROM ubuntu
+FROM ubuntu:14.04.4
 
 MAINTAINER Ukang'a Dickson
 
-RUN apt-get update -qq
-
-# required by drone ci
-RUN apt-get install -yqq socat
-
 # we need postgres client
-RUN apt-get install -yqq  postgresql-client-9.3
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq python python-dev python-setuptools python-pip git-core libpq-dev libproj-dev gdal-bin wget python-software-properties software-properties-common
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq  libx11-dev libsqlite3-dev
-
-RUN apt-get clean
+RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
+&& apt-get install -y --force-yes wget ca-certificates \
+&& DEBIAN_FRONTEND=noninteractive apt-get update \
+  && apt-get install -y --force-yes  postgresql-client-9.4 python python-dev python-setuptools python-pip git-core libpq-dev libproj-dev gdal-bin wget python-software-properties software-properties-common libx11-dev libsqlite3-dev \
+  && rm -rf /var/lib/apt/lists/*
 
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
