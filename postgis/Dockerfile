@@ -1,17 +1,12 @@
-FROM ubuntu
+FROM ubuntu:14.04.4
 
 MAINTAINER Ukang'a Dickson <ukanga@gmail.com>
 
 
-ENV CODENAME trusty
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ $CODENAME-pgdg main" > /etc/apt/sources.list.d/pgdg.list
-ADD apt.postgresql.org.gpg /apt.postgresql.org.gpg
-ENV KEYRING /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg
-RUN test -e $KEYRING || touch $KEYRING
-RUN apt-key --keyring $KEYRING add /apt.postgresql.org.gpg && \
-        apt-get update && \
-        DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql-9.4-postgis-2.1 postgresql-9.4-postgis-script postgis && \
-        DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql-9.3-postgis-2.1 postgresql-9.3-postgis-script postgis
+RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
+  && apt-get install -y --force-yes wget ca-certificates \
+  && apt-get update  \
+  &&  DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes postgresql-9.4-postgis-2.1 postgresql-9.4-postgis-script postgis
 
 ADD pg_hba.conf /etc/postgresql/9.4/main/pg_hba.conf
 ADD postgresql.conf /etc/postgresql/9.4/main/postgresql.conf
