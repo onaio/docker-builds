@@ -7,6 +7,7 @@ MAINTAINER Jason Rogena "jasonrogena@gmail.com"
 ENV ANDROID_HOME /usr/local/android-sdk
 ENV GRADLE_VERSION 2.2
 ENV ANDROID_COMPONENTS platform-tools,android-21,build-tools-21.1.2,extra-android-support,extra-android-m2repository,extra-google-m2repository
+ENV DRONE_HOME /drone
 
 # Sets language to UTF8 : this works in pretty much all cases
 ENV LANG en_US.UTF-8
@@ -113,7 +114,8 @@ RUN id $RUN_USER || adduser --uid "$RUN_UID" \
     --disabled-password "$RUN_USER"
 
 # Fix permissions
-RUN chown -R $RUN_USER:$RUN_USER $ANDROID_HOME $ANDROID_SDK_HOME
+RUN mkdir -p ${DRONE_HOME}
+RUN chown -R $RUN_USER:$RUN_USER $ANDROID_HOME $ANDROID_SDK_HOME $DRONE_HOME
 RUN chmod -R a+rx $ANDROID_HOME $ANDROID_SDK_HOME
 
 # Creating project directories prepared for build when running
