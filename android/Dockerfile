@@ -7,7 +7,6 @@ MAINTAINER Jason Rogena "jasonrogena@gmail.com"
 ENV ANDROID_HOME /usr/local/android-sdk
 ENV GRADLE_VERSION 2.2
 ENV ANDROID_COMPONENTS platform-tools,android-21,build-tools-21.1.2,extra-android-support,extra-android-m2repository,extra-google-m2repository
-ENV DRONE_HOME /drone
 
 # Sets language to UTF8 : this works in pretty much all cases
 ENV LANG en_US.UTF-8
@@ -103,27 +102,9 @@ ENV GRADLE_OPTS "-XX:+UseG1GC -XX:MaxGCPauseMillis=1000"
 # Cleaning
 RUN apt-get clean
 
-# Add build user account, values are set to default below
-ENV RUN_USER bb8
-ENV RUN_UID 3000
-
-RUN id $RUN_USER || adduser --uid "$RUN_UID" \
-    --gecos 'Build User' \
-    --shell '/bin/bash' \
-    --disabled-login \
-    --disabled-password "$RUN_USER"
-
-# Fix permissions
-RUN mkdir -p ${DRONE_HOME}
-RUN chown -R $RUN_USER:$RUN_USER $ANDROID_HOME $ANDROID_SDK_HOME $DRONE_HOME
-RUN chmod -R a+rx $ANDROID_HOME $ANDROID_SDK_HOME
-
 # Creating project directories prepared for build when running
 # `docker run`
-ENV WORKSPACE /workspace
+ENV WORKSPACE /drone
 RUN mkdir $WORKSPACE
-RUN chown -R $RUN_USER:$RUN_USER $WORKSPACE
 WORKDIR $WORKSPACE
-
-USER $RUN_USER
 RUN echo "sdk.dir=$ANDROID_HOME" > local.properties
