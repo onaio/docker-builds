@@ -104,7 +104,7 @@ RUN apt-get clean
 
 # Creating project directories prepared for build when running
 # `docker run`
-ENV WORKSPACE /drone
+ENV WORKSPACE /workspace
 RUN mkdir $WORKSPACE
 WORKDIR $WORKSPACE
 RUN echo "sdk.dir=$ANDROID_HOME" > local.properties
