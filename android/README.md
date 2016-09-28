@@ -15,5 +15,5 @@ The build uses java-8-openjdk-amd64 and has a bundled Gradle v2.2 daemon
 
 Run the following commands to create a Docker image from the Dockerfile and then a container from the image:
 
-  docker build -t onaio_android_image .
-  docker run --name onaio_android_container -i -t onaio_android_image
+    docker build -t onaio/android:java8 .
+    docker run -i -t onaio/android:java8
