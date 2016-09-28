@@ -1,6 +1,6 @@
 # Android Dockerfile
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 
 MAINTAINER Jason Rogena "jasonrogena@gmail.com"
 # General environmental variables
@@ -33,7 +33,6 @@ RUN apt-get install -y \
   lib32z1 \
   lib32z1-dev \
   lib32ncurses5 \
-  lib32bz2-1.0 \
   libc6-dev \
   libgmp-dev \
   libmpc-dev \
