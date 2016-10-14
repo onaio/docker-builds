@@ -2,11 +2,15 @@
 
 FROM ubuntu:16.04
 
+ARG gradleVersion=2.2
+ARG androidComponents=platform-tools,extra-android-support,extra-android-m2repository,extra-google-m2repository
+ARG javaPackage=openjdk-8-jdk
+ARG androidSdkVersion=24.4.1
+
 MAINTAINER Jason Rogena "jasonrogena@gmail.com"
+
 # General environmental variables
 ENV ANDROID_HOME /usr/local/android-sdk
-ENV GRADLE_VERSION 2.2
-ENV ANDROID_COMPONENTS platform-tools,android-21,build-tools-21.1.2,extra-android-support,extra-android-m2repository,extra-google-m2repository
 
 # Sets language to UTF8 : this works in pretty much all cases
 ENV LANG en_US.UTF-8
@@ -57,7 +61,7 @@ RUN apt-get install -y \
 # Install Java
 RUN apt-add-repository ppa:openjdk-r/ppa
 RUN apt-get update
-RUN apt-get -y install openjdk-8-jdk
+RUN apt-get -y install ${javaPackage}
 
 # Clean Up Apt-get
 RUN rm -rf /var/lib/apt/lists/*
@@ -65,13 +69,13 @@ RUN apt-get clean
 
 # Install Android SDK
 # Latest SDK link can be obtained from here https://developer.android.com/studio/index.html#Other
-RUN wget https://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
-RUN tar -xvzf android-sdk_r24.4.1-linux.tgz
+RUN wget https://dl.google.com/android/android-sdk_r${androidSdkVersion}-linux.tgz
+RUN tar -xvzf android-sdk_r${androidSdkVersion}-linux.tgz
 RUN mv android-sdk-linux $ANDROID_HOME
-RUN rm android-sdk_r24.4.1-linux.tgz
+RUN rm android-sdk_r${androidSdkVersion}-linux.tgz
 
 # Install Android tools
-RUN echo y | ${ANDROID_HOME}/tools/android update sdk --filter "${ANDROID_COMPONENTS}" --no-ui -a
+RUN echo y | ${ANDROID_HOME}/tools/android update sdk --filter "${androidComponents}" --no-ui -a
 
 # Environment variables
 ENV ANDROID_SDK_HOME $ANDROID_HOME
@@ -79,16 +83,13 @@ ENV PATH $PATH:$ANDROID_SDK_HOME/tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/platform-tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/21.1.2
 
-# Export JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
-
 # Install Gradle
 WORKDIR /usr/bin
 
-RUN curl -sLO https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-all.zip && \
-  unzip gradle-${GRADLE_VERSION}-all.zip && \
-  ln -s gradle-${GRADLE_VERSION} gradle && \
-  rm gradle-${GRADLE_VERSION}-all.zip
+RUN curl -sLO https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip && \
+  unzip gradle-${gradleVersion}-all.zip && \
+  ln -s gradle-${gradleVersion} gradle && \
+  rm gradle-${gradleVersion}-all.zip
 
 ENV GRADLE_HOME /usr/bin/gradle
 ENV PATH $PATH:$GRADLE_HOME/bin
