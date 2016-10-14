@@ -12,5 +12,5 @@ This Dockerfile has configurable args:
 
 Run the following commands to create a Docker image from the Dockerfile and then a container from the image:
 
-    docker build -t onaio/android:java8 --build-arg "androidComponents=platform-tools,android-21,build-tools-21.1.2,extra-android-support,extra-android-m2repository,extra-google-m2repository" .
+    docker build -t onaio/android:java8 --build-arg "androidComponents=platform-tools,android-21,extra-android-support,extra-android-m2repository,extra-google-m2repository" .
     docker run -i -t onaio/android:java8

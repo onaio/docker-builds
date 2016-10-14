@@ -76,9 +76,8 @@ RUN mv android-sdk-linux $ANDROID_HOME
 RUN rm android-sdk_r${androidSdkVersion}-linux.tgz
 
 # Install Android tools
-RUN if ! [[ -z "${androidComponents}"]]; then toBeInstalled=${androidComponents},; fi
-RUN toBeInstalled=${toBeInstalled}build-tools-${buildToolsVersion}
-RUN echo y | ${ANDROID_HOME}/tools/android update sdk --filter "${toBeInstalled}" --no-ui -a
+# Installe the buildToolsVersion specified as an extra
+RUN if ! [ -z "${androidComponents}" ]; then echo y | ${ANDROID_HOME}/tools/android update sdk --filter "${androidComponents},build-tools-${buildToolsVersion}" --no-ui -a; else echo y | ${ANDROID_HOME}/tools/android update sdk --filter "build-tools-${buildToolsVersion}" --no-ui -a; fi
 
 # Environment variables
 ENV ANDROID_SDK_HOME $ANDROID_HOME
