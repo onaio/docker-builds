@@ -6,6 +6,7 @@ This Dockerfile has configurable args:
   - androidComponents (defaults to platform-tools,extra-android-support,extra-android-m2repository,extra-google-m2repository)
   - javaPackage (defaults to openjdk-8-jdk)
   - androidSdkVersion (defaults to 24.4.1)
+  - buildToolsVersion (defaults to 21.1.2)
 
 ## Running the Dockerfile
 
