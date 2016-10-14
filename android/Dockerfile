@@ -6,6 +6,7 @@ ARG gradleVersion=2.2
 ARG androidComponents=platform-tools,extra-android-support,extra-android-m2repository,extra-google-m2repository
 ARG javaPackage=openjdk-8-jdk
 ARG androidSdkVersion=24.4.1
+ARG buildToolsVersion=21.1.2
 
 MAINTAINER Jason Rogena "jasonrogena@gmail.com"
 
@@ -75,13 +76,14 @@ RUN mv android-sdk-linux $ANDROID_HOME
 RUN rm android-sdk_r${androidSdkVersion}-linux.tgz
 
 # Install Android tools
-RUN echo y | ${ANDROID_HOME}/tools/android update sdk --filter "${androidComponents}" --no-ui -a
+# Installe the buildToolsVersion specified as an extra
+RUN if ! [ -z "${androidComponents}" ]; then echo y | ${ANDROID_HOME}/tools/android update sdk --filter "${androidComponents},build-tools-${buildToolsVersion}" --no-ui -a; else echo y | ${ANDROID_HOME}/tools/android update sdk --filter "build-tools-${buildToolsVersion}" --no-ui -a; fi
 
 # Environment variables
 ENV ANDROID_SDK_HOME $ANDROID_HOME
 ENV PATH $PATH:$ANDROID_SDK_HOME/tools
 ENV PATH $PATH:$ANDROID_SDK_HOME/platform-tools
-ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/21.1.2
+ENV PATH $PATH:$ANDROID_SDK_HOME/build-tools/${buildToolsVersion}
 
 # Install Gradle
 WORKDIR /usr/bin
