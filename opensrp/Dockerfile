@@ -160,6 +160,27 @@ VOLUME ["/opt/couchdb-lucene/indexes"]
 
 EXPOSE 5985
 
+#Installing activemQ
+ENV ACTIVEMQ_VERSION 5.11.1
+ENV ACTIVEMQ apache-activemq-$ACTIVEMQ_VERSION
+
+ENV ACTIVEMQ_HOME /opt/activemq
+ENV ACTIVEMQ_CONF=${ACTIVEMQ_HOME}/conf
+ENV ACTIVEMQ_DATA=${ACTIVEMQ_HOME}/data
+
+RUN \
+    curl -O http://archive.apache.org/dist/activemq/$ACTIVEMQ_VERSION/$ACTIVEMQ-bin.tar.gz && \
+    mkdir -p /opt && \
+    tar xf $ACTIVEMQ-bin.tar.gz -C /opt/ && \
+    rm $ACTIVEMQ-bin.tar.gz && \
+    ln -s /opt/$ACTIVEMQ $ACTIVEMQ_HOME && \
+    useradd -r -M -d $ACTIVEMQ_HOME activemq && \
+    chown activemq:activemq /opt/$ACTIVEMQ -R
+
+VOLUME ["${ACTIVEMQ_CONF}", "${ACTIVEMQ_DATA}"]
+
+EXPOSE 61616 8161
+
 # Copying files
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
