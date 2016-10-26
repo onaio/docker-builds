@@ -137,6 +137,29 @@ VOLUME ["/usr/local/var/lib/couchdb"]
 
 EXPOSE 5984
 
+# Installing CouchDB lucene
+ENV COUCHDB_LUCENE_VERSION 1.1.0
+
+RUN apt-get update \
+  && apt-get install -y maven \
+  && cd /usr/src \
+  && curl -L https://github.com/rnewson/couchdb-lucene/archive/v$COUCHDB_LUCENE_VERSION.tar.gz | tar -xz \
+  && cd couchdb-lucene-$COUCHDB_LUCENE_VERSION \
+  && mvn \
+  && cd /usr/src/couchdb-lucene-$COUCHDB_LUCENE_VERSION/target \
+  && unzip couchdb-lucene-$COUCHDB_LUCENE_VERSION-dist.zip \
+  && mv couchdb-lucene-$COUCHDB_LUCENE_VERSION /opt/couchdb-lucene \
+  && rm -rf /usr/src/couchdb-lucene-* \
+  && apt-get remove --auto-remove -y maven \
+  && rm -rf /var/lib/apt/lists/* \
+  && sed -e 's/^host=localhost$/host=0.0.0.0/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini \
+  && sed -e 's/localhost:5984/couchdb:5984/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini \
+  && chown -R couchdb:couchdb /opt/couchdb-lucene
+
+VOLUME ["/opt/couchdb-lucene/indexes"]
+
+EXPOSE 5985
+
 # Copying files
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
