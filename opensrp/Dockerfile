@@ -181,6 +181,32 @@ VOLUME ["${ACTIVEMQ_CONF}", "${ACTIVEMQ_DATA}"]
 
 EXPOSE 61616 8161
 
+# Install tomcat
+ENV TOMCAT_VERSION 7.0.72
+# Get Tomcat
+RUN wget --quiet --no-cookies http://apache.rediris.es/tomcat/tomcat-7/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/tomcat.tgz && \
+tar xzvf /tmp/tomcat.tgz -C /opt && \
+mv /opt/apache-tomcat-${TOMCAT_VERSION} /opt/tomcat && \
+rm /tmp/tomcat.tgz && \
+rm -rf /opt/tomcat/webapps/examples && \
+rm -rf /opt/tomcat/webapps/docs && \
+rm -rf /opt/tomcat/webapps/ROOT
+
+# Download openmrs war and modules
+RUN curl -O http://liquidtelecom.dl.sourceforge.net/project/openmrs/releases/OpenMRS_Platform_1.11.5/openmrs.war && \
+mv openmrs.war /opt/tomcat/webapps && \
+mkdir /root/.OpenMRS && \
+curl -O http://netcologne.dl.sourceforge.net/project/keymane/opensrp/opensrp_openmrs_modules.tar.gz && \
+tar xzvf opensrp_openmrs_modules.tar.gz  -C /root/.OpenMRS
+
+ENV CATALINA_HOME /opt/tomcat
+
+ENV PATH $PATH:$CATALINA_HOME/bin
+
+VOLUME "/opt/tomcat/webapps"
+
+EXPOSE 8080
+
 # Copying files
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
