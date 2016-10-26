@@ -183,4 +183,10 @@ fi
 
 # Finished CouchDB Initialization
 
+# Initialize CouchDB Lucene
+
+chown -R couchdb:couchdb /opt/couchdb-lucene
+
+# Finished CouchDB Lucene Initialization
+
 exec /usr/bin/supervisord
