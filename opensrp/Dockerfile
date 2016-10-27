@@ -160,7 +160,7 @@ RUN apt-get update \
 RUN sed -i -e '$a\
 \
 [couchdb]\
-os_process_timeout=60000 ; increase the timeout from 5 seconds.\
+os_process_timeout=60000\
 \
 [external]\
 fti=/usr/bin/python /opt/couchdb-lucene/tools/couchdb-external-hook.py\
