@@ -153,8 +153,23 @@ RUN apt-get update \
   && apt-get remove --auto-remove -y maven \
   && rm -rf /var/lib/apt/lists/* \
   && sed -e 's/^host=localhost$/host=0.0.0.0/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini \
-  && sed -e 's/localhost:5984/couchdb:5984/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini \
+  && sed -e 's/localhost:5984/127.0.0.1:5984/' -i /opt/couchdb-lucene/conf/couchdb-lucene.ini \
   && chown -R couchdb:couchdb /opt/couchdb-lucene
+
+# Link with lucene with couchdb
+RUN sed -i -e '$a\
+\
+[couchdb]\
+os_process_timeout=60000 ; increase the timeout from 5 seconds.\
+\
+[external]\
+fti=/usr/bin/python /opt/couchdb-lucene/tools/couchdb-external-hook.py\
+\
+[httpd_db_handlers]\
+_fti = {couch_httpd_external, handle_external_req, <<"fti">>}\
+\
+[httpd_global_handlers]\
+_fti = {couch_httpd_proxy, handle_proxy_req, <<"http:\/\/127.0.0.1:5985">>}' /usr/local/etc/couchdb/local.ini
 
 VOLUME ["/opt/couchdb-lucene/indexes"]
 
