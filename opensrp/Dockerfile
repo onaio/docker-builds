@@ -157,19 +157,15 @@ RUN apt-get update \
   && chown -R couchdb:couchdb /opt/couchdb-lucene
 
 # Link with lucene with couchdb
-RUN sed -i -e '$a\
-\
-[couchdb]\
-os_process_timeout=60000\
-\
-[external]\
-fti=/usr/bin/python /opt/couchdb-lucene/tools/couchdb-external-hook.py\
-\
-[httpd_db_handlers]\
-_fti = {couch_httpd_external, handle_external_req, <<"fti">>}\
-\
-[httpd_global_handlers]\
-_fti = {couch_httpd_proxy, handle_proxy_req, <<"http:\/\/127.0.0.1:5985">>}' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a ' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a [couchdb]' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a os_process_timeout=60000 ; increase the timeout from 5 seconds. ' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a [external]' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a fti=/usr/bin/python /opt/couchdb-lucene/tools/couchdb-external-hook.py' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a [httpd_db_handlers]' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a _fti = {couch_httpd_external, handle_external_req, <<"fti">>}' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a [httpd_global_handlers]' /usr/local/etc/couchdb/local.ini
+RUN sed -i -e '$a _fti = {couch_httpd_proxy, handle_proxy_req, <<"http:\/\/127.0.0.1:5985">>}' /usr/local/etc/couchdb/local.ini
 
 VOLUME ["/opt/couchdb-lucene/indexes"]
 
