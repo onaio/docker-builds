@@ -96,7 +96,6 @@ if [ ! -d "$DATADIR/mysql" ]; then
 
 	if [ "$MYSQL_MOTECH_DATABASE" ]; then
 		echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_MOTECH_DATABASE\` ;" | "${mysql[@]}"
-		mysql+=( "$MYSQL_MOTECH_DATABASE" )
 	fi
 
 	if [ "$MYSQL_OPENMRS_DATABASE" ]; then
@@ -133,6 +132,19 @@ if [ ! -d "$DATADIR/mysql" ]; then
 
 	# Import data
 	mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_MOTECH_DATABASE" < "~/sql/tables_quartz_mysql.sql"
+	mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_OPENMRS_DATABASE" < "~/sql/openmrs.sql"
+	mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_OPENMRS_DATABASE" < "~/sql/locations.sql"
+	mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_OPENMRS_DATABASE" < "~/sql/person_attribute_type.sql"
+
+	# create openmrs properties file
+	touch /root/.OpenMRS/openmrs-runtime.properties
+	cat > /root/.OpenMRS/openmrs-runtime.properties <<- EOF
+		connection.username=${MYSQL_OPENMRS_USER}
+		connection.password=${MYSQL_OPENMRS_PASSWORD}
+		connection.url=jdbc:mysql://localhost:3306/${MYSQL_OPENMRS_DATABASE}?autoReconnect=true&sessionVariables=storage_engine=InnoDB&useUnicode=true&characterEncoding=UTF-8
+		module.allow_web_admin=true
+		auto_update_database=false
+	EOF
 
 	if ! kill -s TERM "$pid" || ! wait "$pid"; then
 		echo >&2 'MySQL init process failed.'
@@ -188,5 +200,11 @@ if ! grep -Pzoqr '\[admins\]\n[^;]\w+' /usr/local/etc/couchdb; then
 fi
 
 # Finished CouchDB Initialization
+
+# Initialize CouchDB Lucene
+
+chown -R couchdb:couchdb /opt/couchdb-lucene
+
+# Finished CouchDB Lucene Initialization
 
 exec /usr/bin/supervisord
