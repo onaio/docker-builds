@@ -157,7 +157,6 @@ RUN apt-get update \
   && chown -R couchdb:couchdb /opt/couchdb-lucene
 
 # Link with lucene with couchdb
-RUN sed -i -e '$a ' /usr/local/etc/couchdb/local.ini
 RUN sed -i -e '$a [couchdb]' /usr/local/etc/couchdb/local.ini
 RUN sed -i -e '$a os_process_timeout=60000 ; increase the timeout from 5 seconds. ' /usr/local/etc/couchdb/local.ini
 RUN sed -i -e '$a [external]' /usr/local/etc/couchdb/local.ini
