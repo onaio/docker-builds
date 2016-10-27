@@ -93,16 +93,22 @@ if [ ! -d "$DATADIR/mysql" ]; then
 		mysql+=( -p"${MYSQL_ROOT_PASSWORD}" )
 	fi
 
-	if [ "$MYSQL_DATABASE" ]; then
-		echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` ;" | "${mysql[@]}"
-		mysql+=( "$MYSQL_DATABASE" )
+
+	if [ "$MYSQL_MOTECH_DATABASE" ]; then
+		echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_MOTECH_DATABASE\` ;" | "${mysql[@]}"
+		mysql+=( "$MYSQL_MOTECH_DATABASE" )
 	fi
 
-	if [ "$MYSQL_USER" -a "$MYSQL_PASSWORD" ]; then
-		echo "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' ;" | "${mysql[@]}"
+	if [ "$MYSQL_OPENMRS_DATABASE" ]; then
+		echo "CREATE DATABASE IF NOT EXISTS \`$MYSQL_OPENMRS_DATABASE\` ;" | "${mysql[@]}"
+		mysql+=( "$MYSQL_OPENMRS_DATABASE" )
+	fi
 
-		if [ "$MYSQL_DATABASE" ]; then
-			echo "GRANT ALL ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%' ;" | "${mysql[@]}"
+	if [ "$MYSQL_OPENMRS_USER" -a "$MYSQL_OPENMRS_PASSWORD" ]; then
+		echo "CREATE USER '$MYSQL_OPENMRS_USER'@'%' IDENTIFIED BY '$MYSQL_OPENMRS_PASSWORD' ;" | "${mysql[@]}"
+
+		if [ "$MYSQL_OPENMRS_DATABASE" ]; then
+			echo "GRANT ALL ON \`$MYSQL_OPENMRS_DATABASE\`.* TO '$MYSQL_OPENMRS_USER'@'%' ;" | "${mysql[@]}"
 		fi
 
 		echo 'FLUSH PRIVILEGES ;' | "${mysql[@]}"
@@ -126,7 +132,7 @@ if [ ! -d "$DATADIR/mysql" ]; then
 	fi
 
 	# Import data
-	mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE" < "~/sql/tables_quartz_mysql.sql"
+	mysql -u root -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_MOTECH_DATABASE" < "~/sql/tables_quartz_mysql.sql"
 
 	if ! kill -s TERM "$pid" || ! wait "$pid"; then
 		echo >&2 'MySQL init process failed.'
