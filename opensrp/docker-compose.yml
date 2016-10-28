@@ -1,0 +1,29 @@
+version: '2'
+services:
+  mysql:
+    image: "mysql:5.6"
+    env_file: ./composed/.env
+    volumes:
+      - ${EXTERNAL_DATA_DIR}/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_OPENMRS_USER}
+      MYSQL_PASSWORD: ${MYSQL_OPENMRS_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_OPENMRS_DATABASE}
+  couchdb:
+    image: "klaemo/couchdb:1.6.1"
+    volumes:
+      - ${EXTERNAL_DATA_DIR}/couchdb:/usr/local/var/lib/couchdb
+  couchdb-lucene:
+    image: "klaemo/couchdb-lucene"
+    volumes:
+      - ${EXTERNAL_DATA_DIR}/couchdb-lucene:/opt/couchdb-lucene/indexes
+  activemq:
+    image: "rmohr/activemq:5.11.1"
+  opensrp-composed:
+    env_file: ./composed/.env
+    build: ./composed
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_MOTECH_DATABASE: ${MYSQL_MOTECH_DATABASE}
+      MYSQL_OPENMRS_DATABASE: ${MYSQL_OPENMRS_DATABASE}
