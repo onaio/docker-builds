@@ -19,6 +19,11 @@ ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
 # Install tomcat
 ENV TOMCAT_VERSION 7.0.72
+
+# Install dependencies
+RUN apt-get update && \
+apt-get install -y  build-essential curl wget software-properties-common vim netstat telnet unzip tar && rm -rf /var/lib/apt/lists/* 
+
 # Get Tomcat
 RUN wget --quiet --no-cookies http://apache.rediris.es/tomcat/tomcat-7/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/tomcat.tgz && \
 tar xzvf /tmp/tomcat.tgz -C /opt && \
