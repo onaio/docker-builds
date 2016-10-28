@@ -21,6 +21,7 @@ services:
     image: "klaemo/couchdb-lucene"
     ports:
       - "5985:5985"
+    entrypoint: ./composed/wait-for-it.sh couchdb:5984
     volumes:
       - ${EXTERNAL_DATA_DIR}/couchdb-lucene:/opt/couchdb-lucene/indexes
   activemq:
