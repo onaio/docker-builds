@@ -28,7 +28,7 @@ services:
     ports:
       - "8161:8161"
   opensrp-composed:
-     build: 
+    build:
       context: .
       dockerfile: ./Dockerfile
     environment:
