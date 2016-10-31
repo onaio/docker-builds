@@ -21,7 +21,7 @@ services:
     image: "klaemo/couchdb-lucene"
     ports:
       - "5985:5985"
-    entrypoint: ./composed/sh/wait-for-it.sh couchdb:5984
+    entrypoint: ./sh/wait-for-it.sh couchdb:5984
     volumes:
       - ${EXTERNAL_DATA_DIR}/couchdb-lucene:/opt/couchdb-lucene/indexes
   activemq:
@@ -29,11 +29,15 @@ services:
     ports:
       - "8161:8161"
   opensrp-composed:
-    build: ./composed
+     build: 
+      context: .
+      dockerfile: ./Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_MOTECH_DATABASE: ${MYSQL_MOTECH_DATABASE}
       MYSQL_OPENMRS_DATABASE: ${MYSQL_OPENMRS_DATABASE}
+      MYSQL_OPENMRS_USER: ${MYSQL_OPENMRS_USER}
+      MYSQL_OPENMRS_PASSWORD: ${MYSQL_OPENMRS_PASSWORD}
     depends_on:
       - mysql
       - couchdb

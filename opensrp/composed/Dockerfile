@@ -24,7 +24,9 @@ ENV TOMCAT_VERSION 7.0.72
 RUN apt-get update && \
 apt-get install -y  build-essential curl wget software-properties-common vim telnet unzip tar
 
-RUN apt-get update && apt-get install mysql-client-5.6 && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+apt-get install -y mysql-client-5.6 && \
+rm -rf /var/lib/apt/lists/*
 
 # Get Tomcat
 RUN wget --quiet --no-cookies http://apache.rediris.es/tomcat/tomcat-7/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/tomcat.tgz && \
