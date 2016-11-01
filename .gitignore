@@ -1,8 +1,3 @@
 *.swp
 opensrp/composed/.env
 .DS_Store
-opensrp/.DS_Store
-opensrp/sql/.DS_Store 
-opensrp/composed/.DS_Store
-opensrp/composed/sh/.DS_Store
-opensrp/composed/sql/.DS_Store 
