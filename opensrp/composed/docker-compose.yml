@@ -23,6 +23,7 @@ services:
       - "5985:5985"
     volumes:
       - ${EXTERNAL_DATA_DIR}/couchdb-lucene:/opt/couchdb-lucene/indexes
+    entrypoint: /bin/bash -c 'chown -R couchdb:couchdb /opt/couchdb-lucene; sleep 1; gosu couchdb /opt/couchdb-lucene/bin/run'
   activemq:
     image: "rmohr/activemq:5.11.1"
     ports:
