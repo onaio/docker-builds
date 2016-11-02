@@ -1,1 +1,3 @@
 *.swp
+opensrp/composed/.env
+.DS_Store

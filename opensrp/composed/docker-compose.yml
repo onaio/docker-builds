@@ -1,0 +1,47 @@
+version: '2'
+services:
+  mysql:
+    image: "mysql:5.6"
+    volumes:
+      - ${EXTERNAL_DATA_DIR}/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_OPENMRS_USER}
+      MYSQL_PASSWORD: ${MYSQL_OPENMRS_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_OPENMRS_DATABASE}
+  couchdb:
+    image: "klaemo/couchdb:1.6.1"
+    ports:
+      - "5984:5984"
+    volumes:
+      - ${EXTERNAL_DATA_DIR}/couchdb:/usr/local/var/lib/couchdb
+  couchdb-lucene:
+    image: "klaemo/couchdb-lucene"
+    ports:
+      - "5985:5985"
+    volumes:
+      - ${EXTERNAL_DATA_DIR}/couchdb-lucene:/opt/couchdb-lucene/indexes
+    entrypoint: /bin/bash -c 'chown -R couchdb:couchdb /opt/couchdb-lucene; sleep 1; gosu couchdb /opt/couchdb-lucene/bin/run'
+  activemq:
+    image: "rmohr/activemq:5.11.1"
+    ports:
+      - "8161:8161"
+  opensrp-composed:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_MOTECH_DATABASE: ${MYSQL_MOTECH_DATABASE}
+      MYSQL_OPENMRS_DATABASE: ${MYSQL_OPENMRS_DATABASE}
+      MYSQL_OPENMRS_USER: ${MYSQL_OPENMRS_USER}
+      MYSQL_OPENMRS_PASSWORD: ${MYSQL_OPENMRS_PASSWORD}
+    depends_on:
+      - mysql
+      - couchdb
+      - couchdb-lucene
+      - activemq
+    ports:
+      - "9090:8080"
