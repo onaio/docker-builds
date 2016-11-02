@@ -220,7 +220,7 @@ EXPOSE 8080
 # Copying files
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-COPY sql ~/sql
+COPY composed/sql ~/sql
 
 COPY start.sh /usr/local/bin/
 
