@@ -40,9 +40,13 @@ rm -rf /opt/tomcat/webapps/ROOT
 # Download openmrs war and modules
 RUN curl -O http://liquidtelecom.dl.sourceforge.net/project/openmrs/releases/OpenMRS_Platform_1.11.5/openmrs.war && \
 mv openmrs.war /opt/tomcat/webapps && \
-mkdir /root/.OpenMRS && \
+mkdir -p /root/.OpenMRS && \
 curl -O http://netcologne.dl.sourceforge.net/project/keymane/opensrp/opensrp_openmrs_modules.tar.gz && \
 tar xzvf opensrp_openmrs_modules.tar.gz  -C /root/.OpenMRS
+
+# Copy sql scripts
+RUN curl -O https://master.dl.sourceforge.net/project/keymane/opensrp/sql.tar.gz && \
+tar xzvf sql.tar.gz  -C /root
 
 ENV CATALINA_HOME /opt/tomcat
 
@@ -54,8 +58,6 @@ EXPOSE 8080
 
 # Copying files
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-COPY sql ~/sql
 
 COPY sh/*.sh /usr/local/bin/
 
