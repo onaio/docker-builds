@@ -8,6 +8,7 @@ RUN apt-get install -y \
 	erlang-dev \
 	python-matplotlib \
 	gnuplot \
+	vim \
 	libtemplate-perl
 RUN apt-get install -y wget \
 	git-core \
@@ -18,8 +19,8 @@ RUN dpkg -i tsung_1.5.1-1_all.deb
 WORKDIR /opt
 RUN mkdir /opt/tsung
 ADD onadata-small.xml /opt/tsung/
+ADD zebra-small.xml /opt/tsung/
 ADD tutorial.json /opt/tsung/
 ADD start /opt/tsung/
 WORKDIR /opt/tsung
 RUN chmod +x /opt/tsung/start
-CMD ["/start"]
