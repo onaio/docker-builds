@@ -1,24 +1,33 @@
 #!/bin/bash
-printf 'Running tsung .... \n'
+printf 'Running tsung API tests... \n'
 output=$(exec tsung -f onadata-small.xml start)
 
-cleanedpath=$(exec echo $output | cut -c 35- | sed 's/.\r//')
+apireportpath=$(exec echo $output | cut -c 35- | sed 's/.\r//')
 
-printf 'Cleaned path:%s\n' $cleanedpath
+printf 'Log path:%s\n' $apireportpath
+
+printf 'Running Zebra load tests... \n'
+output=$(exec tsung -f onadata-small.xml start)
+
+zebrareportpath=$(exec echo $output | cut -c 35- | sed 's/.\r//')
+
+printf 'Log path:%s\n' $apireportpath
+printf 'Log path:%s\n' $zebrareportpath
  
-if [ -d "$cleanedpath" ]; then
-	# Generate the report if log path created
-	printf 'Generating the report .... \n'
-	( cd "$cleanedpath" && /usr/lib/tsung/bin/tsung_stats.pl )
+# TODO: Upload data to github and publish to gh-pages
+# if [ -d "$cleanedpath" ]; then
+# 	# Generate the report if log path created
+# 	printf 'Generating the report .... \n'
+# 	( cd "$cleanedpath" && /usr/lib/tsung/bin/tsung_stats.pl )
 
-	export AWS_ACCESS_KEY_ID="KEY"
-	export AWS_SECRET_ACCESS_KEY="Access"
-	export S3_BUCKET="whodcptest"
-	export FOLDER="tsung-reports"
-	export REGION="us-west-1"
+# 	export AWS_ACCESS_KEY_ID="KEY"
+# 	export AWS_SECRET_ACCESS_KEY="Access"
+# 	export S3_BUCKET="whodcptest"
+# 	export FOLDER="tsung-reports"
+# 	export REGION="us-west-1"
 
-	report="${cleanedpath##*/}"
-	# Bash script to upload files to static s3 hosting
-	printf 'Uploading the report to s3.... \n'
-	exec aws --region $REGION s3 cp $cleanedpath s3://$S3_BUCKET/$FOLDER/$report --recursive 
-fi
+# 	report="${cleanedpath##*/}"
+# 	# Bash script to upload files to static s3 hosting
+# 	printf 'Uploading the report to s3.... \n'
+# 	exec aws --region $REGION s3 cp $cleanedpath s3://$S3_BUCKET/$FOLDER/$report --recursive 
+# fi
