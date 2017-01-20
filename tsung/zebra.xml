@@ -19,44 +19,35 @@
 
 	<sessions>
 		<session name="http-example" probability="100" type="ts_http">
-				<setdynvars sourcetype="value" value="mspray">
+				<!-- Dynamic Variables -->
+				<setdynvars sourcetype="value" value="onasupport">
 				  	<var name="username" />
 				</setdynvars>
-				<setdynvars sourcetype="value" value="1234">
-				  	<var name="password" />
-				</setdynvars>
-				<setdynvars sourcetype="value" value="177">
+				<setdynvars sourcetype="value" value="925">
 				  	<var name="project" />
 				</setdynvars>
-				<setdynvars sourcetype="random_string" length="8">
-					<var name="name" />
+				<setdynvars sourcetype="value" value="28152">
+				  	<var name="form" />
 				</setdynvars>
 
-				<transaction name="login_page">
+				<!-- Transactions -->
+				<transaction name="profile_page">
 					<request subst="true">
-					   	<http url="/login" method="GET" version="1.1">
-					   		<www_authenticate userid="%%_username%%" passwd="%%_password%%!"/-->
+					   	<http url="/%%_username%%" method="GET" version="1.1">
 						</http>
 					</request>
 				</transaction>
-				<transaction name="home_page">
-					<request subst="true">
-					   	<http url="/" method="GET" version="1.1">
-					   		<www_authenticate userid="%%_username%%" passwd="%%_password%%!"/-->
-						</http>
-					</request>
-				</transaction>
+
 				<transaction name="project_page">
 					<request subst="true">
-					   	<http url="/%%_username%%/%%_project-id%%" method="GET" version="1.1">
-					   		<www_authenticate userid="%%_username%%" passwd="%%_password%%!"/-->
+					   	<http url="/%%_username%%/%%_project%%" method="GET" version="1.1">
 						</http>
 					</request>
 				</transaction>
+
 				<transaction name="dataview_page">
 					<request subst="true">
-					   	<http url="/%%_username%%/%%_project-id%%/%%_data-id%%" method="GET" version="1.1">
-					   		<www_authenticate userid="%%_username%%" passwd="%%_password%%!"/-->
+					   	<http url="/%%_username%%/%%_project%%/%%_form%%" method="GET" version="1.1">
 						</http>
 					</request>
 				</transaction>
