@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" [] >
+<tsung loglevel="notice">
+    <clients>
+        <client host="localhost" use_controller_vm="true" />
+    </clients>
+    <servers>
+        <server host="ona.io" port="443" type="ssl"></server>
+    </servers>
+    <load duration="60" unit="second">
+        <arrivalphase phase="1" duration="30" unit="second">
+            <users maxnumber="1000" interarrival="0.5" unit="second"></users>
+        </arrivalphase>
+    </load>
+    <sessions>
+        <session name="http-example" probability="100" type="ts_http">
+            <!-- Dynamic Variables -->
+            <setdynvars sourcetype="value" value="onasupport">
+                <var name="username" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="925">
+                <var name="project" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="28152">
+                <var name="form" />
+            </setdynvars>
+            <!-- Transactions -->
+            <transaction name="profile_page">
+                <request subst="true">
+                    <http url="/%%_username%%" method="GET" version="1.1">
+                    </http>
+                </request>
+            </transaction>
+            <transaction name="project_page">
+                <request subst="true">
+                    <http url="/%%_username%%/%%_project%%" method="GET" version="1.1">
+                    </http>
+                </request>
+            </transaction>
+            <transaction name="dataview_page">
+                <request subst="true">
+                    <http url="/%%_username%%/%%_project%%/%%_form%%" method="GET" version="1.1">
+                    </http>
+                </request>
+            </transaction>
+        </session>
+    </sessions>
+</tsung>
