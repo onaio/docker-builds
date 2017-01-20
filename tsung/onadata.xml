@@ -1,168 +1,147 @@
 <?xml version="1.0"?>
 <!DOCTYPE tsung SYSTEM "/usr/share/tsung/tsung-1.0.dtd" [] >
 <tsung loglevel="notice">
-	<clients>
-  		<client host="localhost" use_controller_vm="true" />
-	</clients>
-
-	<servers>
-	  	<server host="api.ona.io" port="443" type="ssl"></server>
-	</servers>
-
-	<load>
-		<arrivalphase phase="1" duration="5" unit="minute">
-			<users interarrival="0.7" unit="second"></users>
-		</arrivalphase>
-
-		<arrivalphase phase="2" duration="5" unit="minute">
-			<users interarrival="0.5" unit="second"></users>
-		</arrivalphase>
-
-		<arrivalphase phase="3" duration="5" unit="minute">
-			<users interarrival="0.2" unit="second"></users>
-		</arrivalphase>
-	</load>
-
-	<sessions>
-
-		<session name="forms" probability="20" type="ts_http">
-			<setdynvars sourcetype="value" value="mspray">
-			  	<var name="username" />
-			</setdynvars>
-			<setdynvars sourcetype="value" value="1234">
-			  	<var name="password" />
-			</setdynvars>
-
-			<transaction name="formsendpoint">
-		   		<request subst="true">
-		      		<http url="/api/v1/forms" method="GET" version="1.1">
-		      			<www_authenticate userid="%%_username%%" passwd="%%_password%%"/>
-		  			</http>
-		   		</request>
-		   	</transaction>
-		</session>
-
-		<session name="data" probability="20" type="ts_http">
-			<setdynvars sourcetype="value" value="mspray">
-			  	<var name="username" />
-			</setdynvars>
-			<setdynvars sourcetype="value" value="1234">
-			  	<var name="password" />
-			</setdynvars>
-			<setdynvars sourcetype="value" value="14062">
-			  	<var name="form" />
-			</setdynvars>
-
-			<transaction name="dataendpoint">
-				<request subst="true">
-				   	<http url="/api/v1/data/%%_form%%" method="GET" version="1.1">
-				   		<www_authenticate userid="%%_username%%" passwd="%%_password%%"/>
-					</http>
-				</request>
-			</transaction>
-		</session>
-
-		<session name="profiles" probability="10" type="ts_http">
-			<setdynvars sourcetype="value" value="mspray">
-			  	<var name="username" />
-			</setdynvars>
-			<setdynvars sourcetype="value" value="1234">
-			  	<var name="password" />
-			</setdynvars>
-			<setdynvars sourcetype="random_string" length="8">
-				<var name="name" />
-			</setdynvars>
-
-			<transaction name="profilesendpoint">
-				<request subst="true">
-			    	<http url="/api/v1/profiles" method="POST" version="1.1" 
-			            contents="email=%%_name%%@test.com&amp;name=%%_name%%&amp;username=%%_name%%&amp;password=password&amp;city=Nairobi&amp;country=KZ">
-			        </http>
-			    </request>
-
-			    <thinktime value="10" random="true"></thinktime>
-
-				<request subst="true">
-				   	<http url="/api/v1/profiles" method="GET" version="1.1">
-				   	<www_authenticate userid="%%_username%%" passwd="%%_password%%"/></http>
-				</request>
-				<request subst="true">
-				   	<http url="/api/v1/profiles/%%_username%%" method="GET" version="1.1">
-				   	<www_authenticate userid="%%_username%%" passwd="%%_password%%"/></http>
-				</request>
-			</transaction>
-		</session>
-
-		<session name="projects" probability="20" type="ts_http">
-			<setdynvars sourcetype="value" value="mspray">
-			  	<var name="username" />
-			</setdynvars>
-			<setdynvars sourcetype="value" value="1234">
-			  	<var name="password" />
-			</setdynvars>
-			<setdynvars sourcetype="value" value="177">
-			  	<var name="project" />
-			</setdynvars>
-			<setdynvars sourcetype="random_string" length="8">
-				<var name="name" />
-			</setdynvars>
-
-			<transaction name="projectsendpoint">
-				<request subst="true">
-			    	<http url="/api/v1/projects" method="POST" version="1.1" 
-			            contents="owner=http://localhost:8000/api/v1/users/%%_username%%&amp;name=%%_name%%">
-			            <www_authenticate userid="%%_username%%" passwd="%%_password%%"/>
-			        </http>
-			    </request>
-			    <thinktime value="10" random="true"></thinktime>
-				<request subst="true">
-				   	<http url="/api/v1/projects/%%_project%%" method="GET" version="1.1">
-				   		<www_authenticate userid="%%_username%%" passwd="%%_password%%"/>
-					</http>
-				</request>
-			</transaction>
-		</session>
-
-		<session name="exports" probability="10" type="ts_http">
-			<setdynvars sourcetype="value" value="mspray">
-			  	<var name="username" />
-			</setdynvars>
-			<setdynvars sourcetype="value" value="1234">
-			  	<var name="password" />
-			</setdynvars>
-			<setdynvars sourcetype="value" value="14062">
-			  	<var name="form" />
-			</setdynvars>
-
-			<transaction name="csvexport">
-				<request subst="true">
-				   	<http url="/api/v1/forms/%%_form%%.csv" method="GET" version="1.1">
-				   		<www_authenticate userid="%%_username%%" passwd="%%_password%%"/>
-				   	</http>
-				</request>
-			</transaction>
-		</session>
-
-		<session name="submissions" probability="20" type="ts_http">
-				<setdynvars sourcetype="value" value="dennisw">
-				  <var name="username" />
-				</setdynvars>
-				<setdynvars sourcetype="value" value="1234">
-				  <var name="password" />
-				</setdynvars>
-				<setdynvars sourcetype="random_string" length="36">
-				   <var name="uuid" />
-				</setdynvars>
-
-			   	<transaction name="submissions">
-				    <request subst="true">
-				    	<http url="/api/v1/submissions"
-				            method="POST" version="1.1" 
-				            contents_from_file="tutorial.json" content_type="application/json">
-				            <www_authenticate userid="%%_username%%" passwd="%%_password%%"/>
-				        </http>
-				    </request>
-			   	</transaction>
-		</session>
-	</sessions>
+    <clients>
+        <client host="localhost" use_controller_vm="true" />
+    </clients>
+    <servers>
+        <server host="api.ona.io" port="443" type="ssl"></server>
+    </servers>
+    <load>
+        <arrivalphase phase="1" duration="5" unit="minute">
+            <users interarrival="0.7" unit="second"></users>
+        </arrivalphase>
+        <arrivalphase phase="2" duration="5" unit="minute">
+            <users interarrival="0.5" unit="second"></users>
+        </arrivalphase>
+        <arrivalphase phase="3" duration="5" unit="minute">
+            <users interarrival="0.2" unit="second"></users>
+        </arrivalphase>
+    </load>
+    <sessions>
+        <session name="forms" probability="20" type="ts_http">
+            <setdynvars sourcetype="value" value="mspray">
+                <var name="username" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="1234">
+                <var name="password" />
+            </setdynvars>
+            <transaction name="formsendpoint">
+                <request subst="true">
+                    <http url="/api/v1/forms" method="GET" version="1.1">
+                        <www_authenticate userid="%%_username%%" passwd="%%_password%%" />
+                    </http>
+                </request>
+            </transaction>
+        </session>
+        <session name="data" probability="20" type="ts_http">
+            <setdynvars sourcetype="value" value="mspray">
+                <var name="username" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="1234">
+                <var name="password" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="14062">
+                <var name="form" />
+            </setdynvars>
+            <transaction name="dataendpoint">
+                <request subst="true">
+                    <http url="/api/v1/data/%%_form%%" method="GET" version="1.1">
+                        <www_authenticate userid="%%_username%%" passwd="%%_password%%" />
+                    </http>
+                </request>
+            </transaction>
+        </session>
+        <session name="profiles" probability="10" type="ts_http">
+            <setdynvars sourcetype="value" value="mspray">
+                <var name="username" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="1234">
+                <var name="password" />
+            </setdynvars>
+            <setdynvars sourcetype="random_string" length="8">
+                <var name="name" />
+            </setdynvars>
+            <transaction name="profilesendpoint">
+                <request subst="true">
+                    <http url="/api/v1/profiles" method="POST" version="1.1" contents="email=%%_name%%@test.com&amp;name=%%_name%%&amp;username=%%_name%%&amp;password=password&amp;city=Nairobi&amp;country=KZ">
+                    </http>
+                </request>
+                <thinktime value="10" random="true"></thinktime>
+                <request subst="true">
+                    <http url="/api/v1/profiles" method="GET" version="1.1">
+                        <www_authenticate userid="%%_username%%" passwd="%%_password%%" />
+                    </http>
+                </request>
+                <request subst="true">
+                    <http url="/api/v1/profiles/%%_username%%" method="GET" version="1.1">
+                        <www_authenticate userid="%%_username%%" passwd="%%_password%%" />
+                    </http>
+                </request>
+            </transaction>
+        </session>
+        <session name="projects" probability="20" type="ts_http">
+            <setdynvars sourcetype="value" value="mspray">
+                <var name="username" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="1234">
+                <var name="password" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="177">
+                <var name="project" />
+            </setdynvars>
+            <setdynvars sourcetype="random_string" length="8">
+                <var name="name" />
+            </setdynvars>
+            <transaction name="projectsendpoint">
+                <request subst="true">
+                    <http url="/api/v1/projects" method="POST" version="1.1" contents="owner=http://localhost:8000/api/v1/users/%%_username%%&amp;name=%%_name%%">
+                        <www_authenticate userid="%%_username%%" passwd="%%_password%%" />
+                    </http>
+                </request>
+                <thinktime value="10" random="true"></thinktime>
+                <request subst="true">
+                    <http url="/api/v1/projects/%%_project%%" method="GET" version="1.1">
+                        <www_authenticate userid="%%_username%%" passwd="%%_password%%" />
+                    </http>
+                </request>
+            </transaction>
+        </session>
+        <session name="exports" probability="10" type="ts_http">
+            <setdynvars sourcetype="value" value="mspray">
+                <var name="username" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="1234">
+                <var name="password" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="14062">
+                <var name="form" />
+            </setdynvars>
+            <transaction name="csvexport">
+                <request subst="true">
+                    <http url="/api/v1/forms/%%_form%%.csv" method="GET" version="1.1">
+                        <www_authenticate userid="%%_username%%" passwd="%%_password%%" />
+                    </http>
+                </request>
+            </transaction>
+        </session>
+        <session name="submissions" probability="20" type="ts_http">
+            <setdynvars sourcetype="value" value="dennisw">
+                <var name="username" />
+            </setdynvars>
+            <setdynvars sourcetype="value" value="1234">
+                <var name="password" />
+            </setdynvars>
+            <setdynvars sourcetype="random_string" length="36">
+                <var name="uuid" />
+            </setdynvars>
+            <transaction name="submissions">
+                <request subst="true">
+                    <http url="/api/v1/submissions" method="POST" version="1.1" contents_from_file="tutorial.json" content_type="application/json">
+                        <www_authenticate userid="%%_username%%" passwd="%%_password%%" />
+                    </http>
+                </request>
+            </transaction>
+        </session>
+    </sessions>
 </tsung>
