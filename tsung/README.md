@@ -1,4 +1,4 @@
-Tsung load tests for Ona Servers (Zebra and API)
+# Tsung load tests for Ona Services (Zebra and API)
 
 * `onadata-small.xml` - Runs load tests on the `api/v1/user` endpoint.
 * `onadata.xml` - Runs load tests on:
@@ -7,14 +7,18 @@ Tsung load tests for Ona Servers (Zebra and API)
 	- `api/v1/forms` 
 	- `api/v1/submissions`
 * `zebra.xml` - Runs load tests on:
-    - `/login`
+    - Profile page `/<username>` 
+    - Project page `/<username>/<project-id>` 
+    - Dataview page `/<username>/<project-id>/<form-id>` 
 
-To build the docker image use:
-```
-$ docker build -t zebra-load-test .
+####  Steps for running load tests:
+
+1. Build tsung docker image:
+```sh
+$ docker build -t load-tests .
 ```
 
-To run a container that will run the all load tests:
-```
-$ docker run -t -i load-test sh start
+2. Run container that will run the load tests and upload test results:
+```sh
+$ docker run -t -i load-tests sh start
 ```

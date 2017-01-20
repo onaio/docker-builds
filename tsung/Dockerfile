@@ -19,7 +19,8 @@ RUN dpkg -i tsung_1.5.1-1_all.deb
 WORKDIR /opt
 RUN mkdir /opt/tsung
 ADD onadata-small.xml /opt/tsung/
-ADD zebra-small.xml /opt/tsung/
+ADD onadata.xml /opt/tsung/
+ADD zebra.xml /opt/tsung/
 ADD tutorial.json /opt/tsung/
 ADD start /opt/tsung/
 WORKDIR /opt/tsung
