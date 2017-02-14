@@ -4,9 +4,9 @@ MAINTAINER Ukang'a Dickson <ukanga@gmail.com>
 
 
 RUN sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
-  && apt-get install -y --force-yes wget ca-certificates \
   && apt-get update  \
-  &&  DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes postgresql-9.4-postgis-2.1 postgresql-9.4-postgis-script postgis
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes wget ca-certificates \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes postgresql-9.4-postgis-2.1 postgresql-9.4-postgis-script postgis
 
 ADD pg_hba.conf /etc/postgresql/9.4/main/pg_hba.conf
 ADD postgresql.conf /etc/postgresql/9.4/main/postgresql.conf

@@ -7,10 +7,11 @@ if [ ! -d $DATADIR ]; then
     mkdir -p $DATADIR
 fi
 
+chown -R postgres $DATADIR
+
 # test if DATADIR has content
 if [ ! "$(ls -A $DATADIR)" ]; then
     echo "Initializing Postgres Database at $DATADIR"
-    chown -R postgres $DATADIR
     su postgres sh -c "/usr/lib/postgresql/9.4/bin/initdb --locale en_US.UTF-8 -E UTF8 -D $DATADIR"
 fi
 
