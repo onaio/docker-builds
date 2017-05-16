@@ -1,4 +1,4 @@
 #!/bin/bash
 
-
-pwd
+cd /drone/src/github.com/onaio/zebra
+lein up
