@@ -5,7 +5,7 @@ services:
     image: postgres-postgis:9.6.3
     container_name: onadata-postgres
     volumes:
-      - "~/.postgresql/data:/var/lib/postgresql/data"
+      - "~/.postgresql/onadata/data:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
     environment:
