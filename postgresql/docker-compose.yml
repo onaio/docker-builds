@@ -1,0 +1,12 @@
+version: "3"
+services:
+  database:
+    build: .
+    image: postgres-postgis:9.6.3
+    container_name: onadata-postgres
+    volumes:
+      - "~/.postgresql/onadata/data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD
