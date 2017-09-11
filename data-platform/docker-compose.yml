@@ -1,0 +1,44 @@
+version: "0.1"
+services:
+  # Kafka/Zookeeper container
+  docker-kafka:
+    build: kafka/
+    container_name: docker-kafka
+    environment:
+      - ADVERTISED_HOST=docker-kafka
+      - LOG_RETENTION_HOURS=120
+      - KAFKA_CREATE_TOPICS=mspray:4:1
+    ports:
+      - 9092:9092 # kafka broker
+      - 2181:2181 # Zookeeper
+  # Druid container
+  docker-druid:
+    build: druid/
+    container_name: docker-druid
+    ports:
+      - 8081:8081
+      - 8082:8082
+    depends_on:
+      - docker-kafka
+    links:
+      - docker-kafka:docker-kafka
+  # Superset container
+  docker-superset:
+    build: superset/
+    container_name: docker-superset
+    environment:
+      - ADMIN_USERNAME=ona
+      - ADMIN_FIRST_NAME=Ona
+      - ADMIN_LAST_NAME=Tech Ops
+      - ADMIN_EMAIL=techops@ona.io
+      - SUP_ROW_LIMIT=100000
+    ports:
+      - 8088:8088
+    links:
+      - docker-druid:docker-druid
+  # App container
+  #docker-app:
+  #  build: app/
+  #  container_name: docker-app
+  #  ports:
+  #    - 8090:8090
