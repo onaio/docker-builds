@@ -32,6 +32,8 @@ services:
       - ADMIN_LAST_NAME=Tech Ops
       - ADMIN_EMAIL=techops@ona.io
       - SUP_ROW_LIMIT=100000
+    env_file:
+      - superset.env
     ports:
       - 8088:8088
     links:
