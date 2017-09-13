@@ -25,8 +25,10 @@ RUN apt-get update \
 && apt-get install -y $BUILD_DEPS $RUNTIME_DEPS \
 && pip install --upgrade setuptools pip \
 && npm install -g npm@'>=5.0.3' \
-&& git clone https://github.com/Fokko/incubator-superset.git $SUPERSET_HOME \
-&& cd $SUPERSET_HOME/superset/assets \
+&& git clone https://github.com/apache/incubator-superset.git $SUPERSET_HOME \
+&& cd $SUPERSET_HOME \
+&& git checkout 8223729e1ebee9fa0a1116c736037f750e8b2578 \
+&& cd superset/assets \
 && npm install \
 && npm run build \
 && cd $SUPERSET_HOME \
