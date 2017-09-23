@@ -1,0 +1,17 @@
+#!/bin/bash
+DATADIR=/var/lib/postgresql/9.6/main
+
+# test if DATADIR is existent
+if [ ! -d $DATADIR ]; then
+    echo "Creating Postgres data at $DATADIR"
+    mkdir -p $DATADIR
+fi
+
+# test if DATADIR has content
+if [ ! "$(ls -A $DATADIR)" ]; then
+    echo "Initializing Postgres Database at $DATADIR"
+    chown -R postgres $DATADIR
+    su postgres sh -c "/usr/lib/postgresql/9.6/bin/initdb --locale en_US.UTF-8 -E UTF8 -D $DATADIR"
+fi
+
+su postgres -c "/usr/lib/postgresql/9.6/bin/postgres -D $DATADIR -c config_file=/etc/postgresql/9.6/main/postgresql.conf -c listen_addresses=*"
