@@ -8,6 +8,6 @@ ENV GRAPHITE_SERVER_HOST=localhost
 ENV GRAPHITE_SERVER_PROTOCOL=tcp
 
 ADD collectd.conf.tpl /etc/collectd/collectd.conf.tpl
-ADD envtpl /etc/collectd/collectd.conf.tpl
+RUN envtpl /etc/collectd/collectd.conf.tpl
 
 CMD collectd -f
