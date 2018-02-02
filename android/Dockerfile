@@ -7,6 +7,10 @@ ARG androidComponents=platform-tools,extra-android-support,extra-android-m2repos
 ARG javaPackage=openjdk-8-jdk
 ARG androidSdkVersion=24.4.1
 ARG buildToolsVersion=21.1.2
+ARG avdTarget=android-26
+ARG avdPackage=sys-img-x86_64-google_apis-26
+ARG avdAbi=google_apis/x86_64
+ARG avdEmulator=emulator64-x86
 
 MAINTAINER Jason Rogena "jasonrogena@gmail.com"
 
@@ -110,3 +114,6 @@ ENV WORKSPACE /workspace
 RUN mkdir $WORKSPACE
 WORKDIR $WORKSPACE
 RUN echo "sdk.dir=$ANDROID_HOME" > local.properties
+RUN if ! [ -z "${avdTarget}" ]; then echo y | ${ANDROID_HOME}/tools/android update sdk --filter ${avdPackage} --no-ui -a; fi
+RUN if ! [ -z "${avdTarget}" ]; ${ANDROID_HOME}/tools/android create avd --force -n test -t ${avdTarget} --abi ${avdAbi}; fi
+RUN if ! [ -z "${avdTarget}" ]; then echo no | ${ANDROID_HOME}/tools/${avdEmulator} -avd test -no-skin -no-audio -no-window; fi
