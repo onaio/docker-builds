@@ -20,11 +20,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq python3.6 python3.6-dev 
 
 RUN apt-get clean
 
-RUN locale-gen en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 RUN dpkg-reconfigure locales
+RUN locale-gen en_US.UTF-8
 
 RUN LC_ALL=C python3.6 -m pip install pip --upgrade
 RUN LC_ALL=C python3.6 -m pip install wheel --upgrade
