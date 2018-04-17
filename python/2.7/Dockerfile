@@ -8,7 +8,11 @@ RUN DEBIAN_INTERACTIVE=noninteractive apt-get update \
   apt-key add - \
   && sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" > /etc/apt/sources.list.d/pgdg.list' \
   && apt-get update
-RUN DEBIAN_INTERACTIVE=noninteractive apt-get install -y python-dev python-setuptools python-virtualenv git-core postgresql-client-9.5 libpq-dev libproj-dev gdal-bin libsqlite3-dev gcc zlib1g-dev libmemcached-dev libxml2-dev libxslt1-dev libjpeg-dev default-jre-headless locales\
+RUN DEBIAN_INTERACTIVE=noninteractive apt-get install -y python-dev python-setuptools python-virtualenv \
+  postgresql-client-9.5 libpq-dev libproj-dev gdal-bin libsqlite3-dev \
+  libtool gcc cmake librabbitmq-dev pkg-config automake \
+  zlib1g-dev libmemcached-dev libxml2-dev libxslt1-dev libjpeg-dev \
+  default-jre-headless git-core locales \
   && rm -rf /var/lib/apt/lists/*
 
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen \
