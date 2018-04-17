@@ -26,8 +26,9 @@ ENV LC_ALL en_US.UTF-8
 RUN dpkg-reconfigure locales
 RUN locale-gen en_US.UTF-8
 
-RUN LC_ALL=C python3.6 -m pip install pip --upgrade
-RUN LC_ALL=C python3.6 -m pip install wheel --upgrade
+RUN python3.6 -m pip install pip --upgrade
+RUN python3.6 -m pip install wheel --upgrade
+
 
 CMD ["python3"]
 
