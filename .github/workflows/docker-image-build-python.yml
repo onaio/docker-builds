@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./python/3.10/Dockerfile
+          file: ./python/3.10-deps/Dockerfile
           platforms: ${{ matrix.platform }}
           cache-from: type=registry,ref=${{ steps.login-docker-registry.outputs.registry }}/onaio/python-deps:${{ env.VERSION }}
           cache-to: type=inline
