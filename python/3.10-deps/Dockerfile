@@ -63,6 +63,7 @@ ENV HOME /home/appuser
 ENV PYENV_ROOT="$HOME/.pyenv"
 ENV PATH $PYENV_ROOT/versions/3.10.14/bin:$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
-RUN pyenv install 3.10.14 && pyenv global 3.10.14 && pyenv rehash
+RUN pyenv install 3.10.14 && pyenv global 3.10.14 && pyenv rehash \
+  && /home/appuser/.pyenv/versions/3.10.14/bin/pip install --upgrade pip setuptools
 
 CMD ["python"]
