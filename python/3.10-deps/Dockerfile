@@ -46,6 +46,7 @@ RUN apt-get update -q && \
     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
     && locale-gen en_US.UTF-8 \
     && dpkg-reconfigure locales && useradd -G tty -m appuser \
+    && apt-get remove -y python3 \
     # Fix CVE-2022-40897, CVE-2023-50782, CVE-2024-26130, CVE-2023-0286
     && /usr/local/bin/python3.10 -m pip install --upgrade setuptools pip cryptography \
     && apt-get autoremove -y \
